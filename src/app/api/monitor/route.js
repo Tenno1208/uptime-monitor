@@ -26,7 +26,15 @@ const TARGETS = [
     url: 'https://montera-app.vercel.app',
     type: 'Web Application',
     region: 'Vercel Cloud'
-  }
+  },
+  {
+  id: 'duo-chaos',
+  name: 'Duo Chaos',
+  provider: 'Vercel',
+  url: 'https://httpbin.org/status/500', // Tes simulasi web down
+  type: 'Frontend Web',
+  region: 'Vercel Edge (sin1)'
+}
 ];
 
 // Helper Mengirim Pesan Telegram
