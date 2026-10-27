@@ -21,6 +21,7 @@ export default function PublicStatusPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [countdown, setCountdown] = useState(15);
+  const [currentDateString, setCurrentDateString] = useState('');
 
   const fetchStatus = useCallback(async () => {
     setLoading(true);
@@ -38,8 +39,12 @@ export default function PublicStatusPage() {
     }
   }, []);
 
-  // Fetch pertama kali & interval timer
   useEffect(() => {
+    // Set tanggal secara client-side untuk menghindari error prerendering Date
+    setCurrentDateString(
+      new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })
+    );
+
     fetchStatus();
     const interval = setInterval(() => {
       setCountdown((prev) => {
@@ -190,7 +195,6 @@ export default function PublicStatusPage() {
                     isUp ? 'border-slate-800 hover:border-slate-700' : 'border-rose-500/40 bg-rose-950/10'
                   }`}
                 >
-                  {/* Top Bar Card */}
                   <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div className="flex items-center gap-3.5">
                       <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/50 text-blue-400">
@@ -235,7 +239,6 @@ export default function PublicStatusPage() {
                     </div>
                   </div>
 
-                  {/* Latency & Status info */}
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-400 pt-2 border-t border-slate-800/60">
                     <div className="flex items-center gap-1.5">
                       <Zap className={`w-3.5 h-3.5 ${svc.ping < 150 ? 'text-emerald-400' : 'text-amber-400'}`} />
@@ -249,7 +252,6 @@ export default function PublicStatusPage() {
                     </div>
                   </div>
 
-                  {/* Uptime Bar History */}
                   <div>
                     <div className="flex justify-between text-[10px] text-slate-500 mb-1.5 font-mono">
                       <span>24 Pengecekan Terakhir</span>
@@ -273,7 +275,7 @@ export default function PublicStatusPage() {
           </div>
         </div>
 
-        {/* Recent Events / Incident Timeline */}
+        {/* Past Incidents */}
         <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 space-y-4">
           <h3 className="text-sm font-semibold text-slate-300 flex items-center gap-2">
             <Clock className="w-4 h-4 text-blue-400" />
@@ -286,7 +288,7 @@ export default function PublicStatusPage() {
                 Tidak ada laporan kendala jaringan atau kegagalan server yang terdeteksi dalam 24 jam terakhir.
               </p>
               <span className="text-[10px] text-slate-500 font-mono block pt-1">
-                {new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                {currentDateString || 'Memuat tanggal...'}
               </span>
             </div>
           </div>
